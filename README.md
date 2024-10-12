@@ -127,5 +127,8 @@ r.recvuntil('Enter flag: ')
 r.sendline(payload)
 r.interactive()
 ```
+![file](crashed.png)
+there u go ??!!!
+
 
 L33tJbr
